@@ -19,12 +19,29 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 # Configure generative AI
-API_KEY = os.getenv("key")
+API_KEY = os.getenv("key") or os.getenv("GOOGLE_API_KEY")
 if not API_KEY:
-    st.error("❌ Google API Key not found. Please set it in the .env file.")
+    st.error("❌ Google API Key not found. Please set the 'key' environment variable in DigitalOcean App Platform.")
+    st.markdown("""
+    ### Setup Instructions:
+    1. Go to your DigitalOcean App Platform dashboard
+    2. Navigate to your app settings
+    3. Add an environment variable named `key` with your Google Gemini API key
+    4. Redeploy the application
+    """)
     st.stop()
 
 genai.configure(api_key=API_KEY)
+
+# Health check for deployment
+def health_check():
+    """Simple health check endpoint"""
+    return {
+        "status": "healthy",
+        "timestamp": datetime.now().isoformat(),
+        "api_configured": bool(API_KEY),
+        "gemini_model": GEMINI_MODEL
+    }
 
 # Constants
 MAX_FILE_SIZE_MB = 200

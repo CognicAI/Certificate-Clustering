@@ -21,8 +21,8 @@ ENV/
 # Jupyter Notebooks
 .ipynb_checkpoints/
 
-# Streamlit specific
-.streamlit/
+# Streamlit specific (allow config for deployment)
+# .streamlit/
 
 # Docker related files
 .docker/
